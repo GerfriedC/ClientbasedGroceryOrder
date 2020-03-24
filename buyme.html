@@ -13,11 +13,16 @@
     flex-direction: column;
   background-color: whitesmoke;
 }
+.parentObjects { display: flex;
+    flex-direction: row;
+	flex-wrap: wrap;
+  background-color: whitesmoke;
+}
     
 .draggableSpan {  
       background-color: wheat;
   color: darkred;
-  width: 150px;
+  width: 250px;
   height: auto;
   margin: 10px;
   text-align: center;
@@ -190,6 +195,7 @@ function mailOrder()
 <p>Items  einfach in den Einkaufskorb ziehen. Die Liste kann nach Eingabe von Zustelldatum und Ort dann gemailt werden. Die Bezeichnung kann durch doppeltes Klicken auf ein Produkt geändert werden.</p>
 </div>
     <div class='parent'>
+    <div class='parentObjects'>
         <span class='draggableSpan'
         id="Brot"
           draggable='true'
@@ -200,34 +206,64 @@ function mailOrder()
       <span class='draggableSpan'
           draggable='true'
           id="Milch"
-          ondragstart='onDragStart(event);'>
+          ondragstart='onDragStart(event);'          ondblclick="openForm('Milch');"​
+ >
             Milch
         </span>
       <span class='draggableSpan'
           draggable='true'
           id="Butter"
-          ondragstart='onDragStart(event);'>
+          ondragstart='onDragStart(event);'          ondblclick="openForm('Butter');"​
+ >
             Butter
         </span>
         <span class='draggableSpan'
           draggable='true'
           id="Hartkäse"
         
-          ondragstart='onDragStart(event);'>
+          ondragstart='onDragStart(event);'          ondblclick="openForm('Hartkäse');"​
+ >
             Hartkäse
+        </span>
+        <span class='draggableSpan'
+          draggable='true'
+          id="Frischkäse"
+        
+          ondragstart='onDragStart(event);'          ondblclick="openForm('Frischkäse');"​
+ >
+            Frischkäse
         </span>
         <span class='draggableSpan'
           draggable='true'
           id="Joghurt"
         
-          ondragstart='onDragStart(event);'>
+          ondragstart='onDragStart(event);'          ondblclick="openForm('Joghurt');"​
+ >
             Joghurt
         </span>
         <span class='draggableSpan'
           draggable='true'
+          id="Fruchtjoghurt"
+        
+          ondragstart='onDragStart(event);'          ondblclick="openForm('Fruchtjoghurt');"​
+ >
+            Joghurt
+        </span>
+		<span class='draggableSpan'
+          draggable='true'
+          id="Haferflocken"
+        
+          ondragstart='onDragStart(event);'          ondblclick="openForm('Haferflocken');"​
+ >
+            Haferflocken
+        </span>
+        
+        <span class='draggableSpan'
+          draggable='true'
           id="Toilettenpapier"
         
-          ondragstart='onDragStart(event);'>
+          ondragstart='onDragStart(event);'          ondblclick="openForm('Toilettenpapier');"​
+ >
             Toilettenpapier
         </span>
         <span class='draggableSpan'
@@ -239,34 +275,48 @@ function mailOrder()
         </span>
         <span class='draggableSpan'
           draggable='true'
-          id="Obst"
+          id="HeimObst"
         
-          ondragstart='onDragStart(event);'>
-            Obst
+          ondragstart='onDragStart(event);'          ondblclick="openForm('HeimObst');"
+ >
+            Heimisches Obst
+        </span>
+        <span class='draggableSpan'
+          draggable='true'
+          id="sonstObst"
+        
+          ondragstart='onDragStart(event);'          ondblclick="openForm('sonstObst');"
+ >
+            Obst (Orangen,Bananen)
         </span>
   
         <span class='draggableSpan'
         id="Katzenfutter"
         
           draggable='true'
-          ondragstart='onDragStart(event);'>
+          ondragstart='onDragStart(event);'          ondblclick="openForm('Katzenfutter');"
+ >
             Katzenfutter trocken
         </span>
-        <div width=20%>
+		</div>
+    <div width=20%>
+            <span class="landingZone" id="basket"
+          ondragover='onDragOver(event);'
+          ondrop='onDrop(event);'>
+            Einkaufskorb
+        </span>
+		</div>
+    <div width=20%>
         <label for="date"><b>Datum der Zustellung</b></label>
         <input type="date" id="date" name="date" required>
         <label for="adress"><b>Ort der Zustellung</b></label>
         <input type="adress" id="adress" name="adress" required>
     <button type="submit" class="btn" onClick="mailOrder()">Bestellung Senden</button>
   </div>
-        <span class="landingZone" id="basket"
-          ondragover='onDragOver(event);'
-          ondrop='onDrop(event);'>
-            Einkaufskorb
-        </span>
-      </div>
+      
+	  </div>
       <div class="form-popup"  action="javascript:void(0);" id="myForm">
-        <form  class="form-container">
+        <div  class="form-container">
           <h1>Ändere Bezeichnung</h1>
           <input type="hidden" id="field" name="field">
       
@@ -276,7 +326,7 @@ function mailOrder()
       
           <button  class="btn" onClick="changeText(this)">Speichere</button>
           <button  class="btn cancel" onclick="closeForm()">Schließe</button>
-        </form>
+        </div>
       </div> 
           
 </body>
