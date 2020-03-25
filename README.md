@@ -4,6 +4,7 @@ The aim is to allow dragging of the items for a shopping list, using simple CSS/
 The changed innerHTML is now saved in a Browser DB. The adress is not yet saved.
 
 ToDo: The draggable goods might be produced then out of a list.
-Importants ToDo: The app does not work with mobile browsers.
+
+Important ToDo: The app does not work with mobile browsers.
 
 many thanks for your contribution
