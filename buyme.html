@@ -9,6 +9,7 @@
 
 
 <style>
+    body{ font-family:Verdana, Geneva, Tahoma, sans-serif}
 .parent { display: flex;
     flex-direction: column;
   background-color: whitesmoke;
@@ -31,13 +32,13 @@
     .landingZone {  
       background-color: lightgoldenrodyellow;
   color: darkolivegreen;
-  width: 200px;
-  min-height: 40px;
+  width: 250px;
+  min-height: 50px;
   margin: 10px;
   text-align: center;
   font-size: 32px;
   border: 2px solid darkgreen;
-  border-radius: 6px;
+  border-radius: 0px;
     }
   
    
@@ -98,6 +99,16 @@
   margin-bottom:10px;
   opacity: 0.8;
 }
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: tomato;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+} 
 .parent .btn {
   background-color: #4CAF50;
   color: white;
@@ -107,21 +118,30 @@
   width: 20%;
   margin-bottom:10px;
   opacity: 0.8;
+  font-size: 16px;
+ 
 }
 /* Add some hover effects to buttons */
 .parent .btn:hover, .open-button:hover {
   opacity: 1;
 } 
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
+.btn {
+  background-color: #aa4caa;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  margin-bottom:10px;
+  opacity: 0.8;
+  font-size: 16px;
+ 
 }
-
 /* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
+.btn:hover, .open-button:hover {
   opacity: 1;
 } 
+
 </style>
 
 
@@ -187,12 +207,99 @@ function mailOrder()
      subject='Bestellung';
      window.open('mailto:order@bestellung.com?subject=subject&body='+body+' am '+date+' nach '+adress);    
 }
+function saveData(e)
+{   // e.preventDefault();
+         // e.stopPropagation();
+    // console.log('storage='+typeof(Storage));    
+    if (typeof(Storage) !== "undefined") {
+            // Store
+        var elements = document.getElementsByTagName("span");
+        console.log('Länge '+elements.length);
+                
+        var j=0;
+        var jsonText=""; 
+        for (var i = 0; i < elements.length; i++) {
+            console.log('elem '+i+' HTML='+ elements[i].innerHTML + ' id='+elements[i].id);
+            if(elements[i].innerHTML  && elements[i].id) {
+                localStorage.setItem(elements[i].id, elements[i].innerHTML);
+
+                // console.log(elements[i]);
+                var labelElements=elements[i].labels;
+             //   console.log(labelElements);
+             /*       
+                if(labelElements.length > 0) // wenn es eine Beschriftung gibt
+                {
+                   	console.log('schreibt ' + elements[i].innerHTML);
+                    var obj={VariableName: elements[i].id, Value: elements[i].innerHTML, Description: labelElements[0].textContent};
+                }
+                else
+                */
+                console.log('schreibt ' + elements[i].innerHTML +' auf '+elements[i].id);
+                    var obj={VariableName: elements[i].id, Value: elements[i].innerHTML};
+            
+                jsonText+=JSON.stringify(obj )+"<br>";
+                elements[i].style.backgroundColor = "lightgreen"; // zum zeichen das es gespiechert wurde
+                    
+                //      console.log("obj.name="+elements[i].name+" obj.value=" +elements[i].value);
+                j++;
+            }
+            else 
+                console.log("FEHLER: Wert für "+elements[i].id+" im Formular nicht definiert ");
+        
+        }
+        document.getElementById("result").innerHTML = "Writing on Local Web Storage finished, "+j+" data sets saved (marked green).";
+    //    document.getElementById("xml").innerHTML="<code>"+jsonText+"</code>" ; // wenn appendChild nicht funktioniert
+        
+    } else {
+            document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+        }
+    return false;
+}
+
+function retrieveData(e)
+{   e.preventDefault();
+          // e.stopPropagation();
+        
+    if (typeof(Storage) !== "undefined") {
+            // Store
+        var elements = document.getElementsByTagName("span")
+        var j=0;
+        for (var i = 0; i < elements.length; i++) {
+            if( elements[i].id ) {
+                 // Retrieve        
+                sData=localStorage.getItem(elements[i].id);
+             //    console.log("stored obj="+sData);
+                // document.getElementById(key).innerHTML = sData;
+                if(sData)
+                {     elements[i].innerHTML=sData;
+                     elements[i].style.backgroundColor = "lightyellow";
+                //   console.log("Neuer Wert obj.name="+elements[i].name+" obj.value=" +elements[i].value);
+                     j++;  
+                }     
+            }
+            else
+                console.log("FEHLER "+elements[i].id +" im Formular nicht vorhanden ");
+          
+        }
+            document.getElementById("result").innerHTML = "Reading Local Web Storage finalized, "+j+" data sets read (marked yellow)";
+        
+        
+        } else {
+            document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+    }
+    return false;
+         
+}
+      
+
 </script>
 </head>
 <body>
 <div>
 <h2>Anleitung</h2>
 <p>Items  einfach in den Einkaufskorb ziehen. Die Liste kann nach Eingabe von Zustelldatum und Ort dann gemailt werden. Die Bezeichnung kann durch doppeltes Klicken auf ein Produkt geändert werden.</p>
+<button class="btn"  onclick="saveData(event)" id="BA">Speichere Daten lokal</button>
+<button class="btn" onclick="retrieveData(event)" id="BB">Lese lokal gespeicherte Daten</button>
 </div>
     <div class='parent'>
     <div class='parentObjects'>
@@ -299,13 +406,11 @@ function mailOrder()
             Katzenfutter trocken
         </span>
 		</div>
-    <div width=20%>
-            <span class="landingZone" id="basket"
+    <div width=20% class="landingZone" id="basket"
           ondragover='onDragOver(event);'
           ondrop='onDrop(event);'>
             Einkaufskorb
-        </span>
-		</div>
+   	</div>
     <div width=20%>
         <label for="date"><b>Datum der Zustellung</b></label>
         <input type="date" id="date" name="date" required>
@@ -328,6 +433,7 @@ function mailOrder()
           <button  class="btn cancel" onclick="closeForm()">Schließe</button>
         </div>
       </div> 
-          
+   <div id="result"></div>       
+   <div id="xml"></div>       
 </body>
 </html>
